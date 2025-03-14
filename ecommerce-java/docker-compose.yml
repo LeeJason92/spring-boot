@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    #buid : dockerfile location
+    build: .
+    ports:
+      - "10002:10002"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/ecommerce
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
